@@ -1,0 +1,255 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Aim Higher Lab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* Layout: bold tab bar over one working panel per station; chunky bordered cards, projector-friendly size. */
+:root{
+  --navy:#1B1F4B; --ink2:#4A4F7A; --bg:#F3F8FF; --card:#FFFFFF;
+  --coral:#FF5D73; --teal:#12B5A5; --violet:#7A5CFF; --yellow:#FFC93C; --blue:#2F9BFF; --green:#5FB41E;
+  --coral-t:#FFE3E7; --teal-t:#D5F5F1; --violet-t:#E8E2FF; --yellow-t:#FFF2C7; --blue-t:#DCEDFF; --green-t:#E8F7D4;
+  --font:'Nunito','Segoe UI',Arial,sans-serif; --r:14px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--navy);font-family:var(--font);font-size:17px;line-height:1.45;margin:0;
+  padding-block:0 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1040px;margin:0 auto}
+header.top{padding:22px 0 10px;display:flex;gap:16px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap}
+h1{font-size:clamp(26px,4.4vw,40px);line-height:1.05;margin:0;font-weight:900;letter-spacing:-.01em}
+.sub{color:var(--ink2);margin:6px 0 0;font-weight:700}
+.badge{background:var(--yellow);border:2px solid var(--navy);border-radius:999px;padding:4px 14px;font-weight:900;font-size:13px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+nav.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0 18px}
+nav.tabs button{font:inherit;text-align:left;cursor:pointer;background:var(--card);border:2px solid var(--navy);border-radius:var(--r);padding:10px 12px;color:var(--navy);box-shadow:0 4px 0 var(--navy);min-width:0}
+nav.tabs button b{display:block;font-size:17px;font-weight:900}
+nav.tabs button span{display:block;font-size:13px;color:var(--ink2);font-weight:700}
+nav.tabs button[aria-selected=true]{background:var(--tabc,var(--blue));color:#fff;transform:translateY(2px);box-shadow:0 2px 0 var(--navy)}
+nav.tabs button[aria-selected=true] span{color:#fff}
+nav.tabs button:focus-visible,.btn:focus-visible,select:focus-visible,textarea:focus-visible,input:focus-visible,.opt:focus-visible{outline:3px solid var(--violet);outline-offset:2px}
+.panel{display:none}.panel.on{display:block}
+.card{background:var(--card);border:2px solid var(--navy);border-radius:var(--r);padding:16px 18px;margin:0 0 16px}
+.card h2{margin:0 0 6px;font-size:22px;font-weight:900}
+.card h3{margin:0 0 6px;font-size:18px;font-weight:900}
+.mission{background:var(--yellow-t);border-color:var(--navy)}
+.lead{color:var(--ink2);font-weight:700;margin:0 0 10px}
+.btn{font:inherit;font-weight:900;border:2px solid var(--navy);border-radius:12px;background:var(--yellow);color:var(--navy);padding:9px 18px;cursor:pointer;box-shadow:0 4px 0 var(--navy)}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--navy)}
+.btn.alt{background:var(--card)}.btn.go{background:var(--green);color:#fff}.btn[disabled]{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.chain{display:flex;gap:6px;align-items:stretch;flex-wrap:wrap;margin:8px 0}
+.node{flex:1 1 130px;min-width:0;border:2px solid var(--navy);border-radius:12px;padding:8px 10px;background:var(--blue-t);font-weight:800;font-size:15px;transition:.25s}
+.node small{display:block;font-weight:700;color:var(--ink2);font-size:12.5px}
+.node.hit{background:var(--coral);color:#fff}.node.hit small{color:#fff}
+.node.ok{background:var(--green-t)}.node.bad{background:var(--coral-t)}
+.arrow{align-self:center;font-weight:900;font-size:22px}
+.slot{flex:1 1 140px;min-height:74px;border:2px dashed var(--navy);border-radius:12px;padding:8px;background:#fff;cursor:pointer;font-weight:800;font-size:15px;min-width:0}
+.slot i{display:block;font-style:normal;font-size:12px;color:var(--ink2);font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+.slot.f{border-style:solid;background:var(--blue-t)}.slot.good{background:var(--green-t)}.slot.wrong{background:var(--coral-t)}
+.opts{display:grid;gap:8px;margin:8px 0}
+.opt{font:inherit;text-align:left;cursor:pointer;background:#fff;border:2px solid var(--navy);border-radius:12px;padding:9px 12px;color:var(--navy);font-weight:700;min-width:0}
+.opt:hover{background:var(--blue-t)}.opt.sel{background:var(--violet-t);border-color:var(--violet);box-shadow:inset 0 0 0 2px var(--violet)}
+.opt.good{background:var(--green-t);border-color:var(--green)}.opt.wrong{background:var(--coral-t);border-color:var(--coral)}
+.fb{border-radius:12px;padding:10px 14px;font-weight:700;margin-top:10px;border:2px solid var(--navy)}
+.fb.good{background:var(--green-t)}.fb.bad{background:var(--coral-t)}.fb.info{background:var(--blue-t)}
+.tag{display:inline-block;border:2px solid var(--navy);border-radius:999px;padding:1px 10px;font-size:12px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;background:var(--violet-t)}
+.tag.red{background:var(--coral-t)}.tag.green{background:var(--green-t)}.tag.y{background:var(--yellow-t)}
+table.log{border-collapse:collapse;width:100%;font-size:14.5px}
+table.log th,table.log td{border:2px solid var(--navy);padding:6px 8px;text-align:left;vertical-align:top}
+table.log th{background:var(--blue-t);font-weight:900}
+.tw{overflow-x:auto}
+select,textarea,input[type=text]{font:inherit;font-weight:700;border:2px solid var(--navy);border-radius:10px;padding:8px 10px;background:#fff;color:var(--navy);max-width:100%}
+textarea{width:100%;min-height:90px}
+select{min-width:0;width:100%}
+label.lbl{display:block;font-weight:900;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink2);margin:8px 0 3px}
+.dots{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin:6px 0}
+.dots span{border:2px solid var(--navy);border-radius:6px;text-align:center;font-weight:900;padding:4px 0;font-size:14px;background:var(--green-t)}
+.dots span.x{background:var(--coral-t)}
+.big{font-size:32px;font-weight:900;line-height:1}
+.bar{height:20px;border:2px solid var(--navy);border-radius:10px;background:#fff;overflow:hidden}
+.bar>i{display:block;height:100%;width:0;background:var(--blue);transition:width .6s}
+.score{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0}
+.score div{border:2px solid var(--navy);border-radius:12px;padding:6px 12px;background:var(--yellow-t);font-weight:900}
+.chk{list-style:none;padding:0;margin:8px 0}.chk li{padding:3px 0;font-weight:800}
+.chk li::before{content:"○ ";color:var(--ink2)}.chk li.y::before{content:"✔ ";color:var(--green)}
+.fb+.row,.opts+.row{margin-top:10px}
+.note{font-size:14px;color:var(--ink2);font-weight:700}
+footer{margin-top:24px;color:var(--ink2);font-size:14px;font-weight:700}
+@media(max-width:720px){nav.tabs{grid-template-columns:repeat(2,1fr)}.grid2,.grid3{grid-template-columns:1fr}.arrow{display:none}body{font-size:16px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<div class="wrap">
+<header class="top"><div><h1>Aim Higher Lab</h1><p class="sub">Grade 10 AI · Week 12 · Show it, govern it, aim higher</p></div><span class="badge">Week 12 · Lab</span></header>
+<nav class="tabs" role="tablist" aria-label="Lab stations"><button role="tab" data-tab="h1" aria-selected="false" style="--tabc:var(--coral)"><b>H1 Justify</b><span>Choice · strand · trade-off</span></button><button role="tab" data-tab="h2" aria-selected="false" style="--tabc:var(--teal)"><b>H2 Canvas</b><span>Govern + decide</span></button><button role="tab" data-tab="h3" aria-selected="false" style="--tabc:var(--violet)"><b>H3 Carousel</b><span>Peer review</span></button><button role="tab" data-tab="h4" aria-selected="false" style="--tabc:var(--blue)"><b>H4 Ripple & goal</b><span>Fix, then aim</span></button></nav>
+<section class="panel" id="h1" role="tabpanel">
+ <div class="card mission"><h2>H1 · Justify studio</h2><p class="lead">Mission: turn “what I did” into a justification. Every justification has four parts: the choice, its strand, the reason and the trade-off. Build three, then write your own.</p></div>
+ <div id="h1cards"></div>
+ <div class="card"><h3>Your own choice</h3><div class="grid2"><div><label class="lbl" for="h1c">My choice</label><input type="text" id="h1c" style="width:100%" placeholder="e.g. I chose a simple rule…"></div><div><label class="lbl" for="h1s">Strand</label><select id="h1s"><option value="">Choose…</option><option>Systems understanding</option><option>Solution design</option><option>Critical evaluation</option><option>Governance</option></select></div><div><label class="lbl" for="h1r">Reason</label><input type="text" id="h1r" style="width:100%" placeholder="because…"></div><div><label class="lbl" for="h1t">Trade-off (what I gave up)</label><input type="text" id="h1t" style="width:100%" placeholder="the cost is…"></div></div>
+ <ul class="chk" id="h1chk"><li data-k="c">Choice named</li><li data-k="s">Strand chosen</li><li data-k="r">Reason given</li><li data-k="t">Trade-off given</li></ul><div class="row"><button class="btn" id="h1copy">Copy my answers</button></div></div>
+</section>
+<section class="panel" id="h2" role="tabpanel">
+ <div class="card mission"><h2>H2 · Governance canvas and decision brief</h2><p class="lead">Mission: complete the six-part canvas for the Canteen Share Helper, then decide: deploy, scale or pause.</p></div>
+ <div class="card"><h3>1 · Fill the six parts</h3><p class="lead">Choose the best entry for each part. Watch for the part that gets forgotten most often.</p><div class="grid3" id="h2canvas"></div><div class="row"><button class="btn go" id="h2check">Check my canvas</button></div><div id="h2fb" class="fb" hidden></div></div>
+ <div class="card"><h3>2 · Decision brief</h3><p class="lead">Read the evidence, pick deploy, scale or pause, then pick the best reason.</p><div id="h2cases"></div><div class="score"><div id="h2sc">Decisions 0 / 3</div></div></div>
+ <div class="card"><div class="row"><button class="btn" id="h2copy">Copy my answers</button></div></div>
+</section>
+<section class="panel" id="h3" role="tabpanel">
+ <div class="card mission"><h2>H3 · Peer review carousel</h2><p class="lead">Mission: review three made-up solutions, one strand lens each. Give a strength, an improvement and a question. Feed-forward must be specific, tied to the strand, kind, and about the work.</p></div>
+ <div class="card"><div class="row" style="justify-content:space-between"><h3 id="h3head">Exhibit 1 of 3</h3><div class="score"><div id="h3sc">Actionable 0 / 9</div></div></div><div id="h3stage"></div></div>
+ <div class="card" id="h3done" hidden><h3>Your feed-forward cards</h3><pre id="h3txt" style="white-space:pre-wrap;font-family:inherit;font-weight:700;margin:0 0 10px"></pre><div class="row"><button class="btn" id="h3copy">Copy my answers</button></div></div>
+</section>
+<section class="panel" id="h4" role="tabpanel">
+ <div class="card mission"><h2>H4 · Ripple and Term-2 goal</h2><p class="lead">Mission: test one fix and watch what it ripples into. Then turn it into one specific, checkable Term-2 goal.</p></div>
+ <div class="card"><h3>1 · Apply one fix</h3><div class="opts" id="h4fix"></div>
+  <div id="h4bars" class="grid2" style="margin-top:8px"></div><div id="h4fb" class="fb info" hidden></div>
+  <div class="grid2"><div><label class="lbl" for="h4imp">This fix improves…</label><select id="h4imp"><option value="">Choose…</option></select></div><div><label class="lbl" for="h4cost">…but it costs…</label><select id="h4cost"><option value="">Choose…</option></select></div></div>
+  <div class="row"><button class="btn go" id="h4rip">Check my ripple sentence</button></div><div id="h4fb2" class="fb" hidden></div></div>
+ <div class="card"><h3>2 · Build your Term-2 goal</h3>
+  <div class="grid2"><div><label class="lbl" for="h4s">Strand I will target</label><select id="h4s"><option value="">Choose…</option><option>Systems understanding</option><option>Solution design</option><option>Critical evaluation</option><option>Governance</option></select></div><div><label class="lbl" for="h4w">Check it by (week of Term 2)</label><select id="h4w"><option value="">Choose…</option><option>Week 2</option><option>Week 4</option><option>Week 6</option><option>Week 8</option></select></div></div>
+  <label class="lbl" for="h4g">My goal (with a number)</label><textarea id="h4g" style="min-height:70px" placeholder="e.g. Raise held-out accuracy from 90% to 95%…"></textarea>
+  <label class="lbl" for="h4f">My first step</label><textarea id="h4f" style="min-height:60px" placeholder="e.g. Add 5 new edge-case tests…"></textarea>
+  <ul class="chk" id="h4chk"><li data-k="spec">Specific: says what will change (8 words or more)</li><li data-k="meas">Measurable: has a number I can check</li><li data-k="pri">Prioritised: a strand and a check week are chosen</li><li data-k="step">First step: an action I can start on (4 words or more)</li></ul>
+  <div class="note">Weak: “Get better at AI.” Strong: “Raise held-out accuracy from 90% to 95% by adding 5 edge-case tests by Week 4.”</div>
+  <div class="row"><button class="btn" id="h4copy">Copy my answers</button></div></div>
+</section>
+
+<footer>Made-up examples only. No names, faces or personal details. Nothing you type here is saved or sent anywhere. Use “Copy my answers” and paste into your worksheet.</footer>
+</div>
+<script>
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+const initDone={};
+function show(id,push){
+  if(!/^h[1-4]$/.test(id)) id='h1';
+  $$('[role=tab]').forEach(t=>t.setAttribute('aria-selected',t.dataset.tab===id));
+  $$('.panel').forEach(p=>p.classList.toggle('on',p.id===id));
+  if(!initDone[id]&&window['init_'+id]){initDone[id]=1;window['init_'+id]()}
+  if(push!==false&&location.hash!=='#'+id){try{history.replaceState(null,'','#'+id)}catch(e){location.hash=id}}
+}
+$$('[role=tab]').forEach(t=>t.addEventListener('click',()=>show(t.dataset.tab)));
+window.addEventListener('hashchange',()=>show(location.hash.slice(1),false));
+function copyText(txt,btn){
+  const done=()=>{const o=btn.textContent;btn.textContent='Copied ✔';setTimeout(()=>btn.textContent=o,1600)};
+  const fb=()=>{let ta=btn.parentElement.querySelector('textarea.cp');if(!ta){ta=document.createElement('textarea');ta.className='cp';ta.readOnly=true;btn.parentElement.appendChild(ta)}ta.value=txt;ta.style.width='100%';ta.select()};
+  try{navigator.clipboard.writeText(txt).then(done).catch(fb)}catch(e){fb()}
+}
+function fbox(id,cls,html){const e=$('#'+id);e.className='fb '+cls;e.innerHTML=html;e.hidden=false}
+</script>
+<script>
+const R={};
+/* H1 */
+const J=[
+{c:'Use a simple sorting rule instead of a stronger tool I cannot audit',s:'Solution design',r:['I can explain and audit every step','It looks more modern','It is the fastest to type'],ra:0,t:['It covers fewer unusual foods','It uses more electricity','Nothing; there is no cost'],ta:0},
+{c:'Remove the student-name field from the data',s:'Governance',r:['It makes the table shorter','It protects people’s privacy','It makes the colours match'],ra:1,t:['Notes cannot be personalised','The system gets slower to start','Nothing; there is no cost'],ta:0},
+{c:'Test on 10 held-out lists after every change',s:'Critical evaluation',r:['It shows real improvement, not practice luck','It fills the lesson time','It is what the teacher likes'],ra:0,t:['It takes more time each round','It hides the failures','Nothing; there is no cost'],ta:0}];
+const STR=['Systems understanding','Solution design','Critical evaluation','Governance'];
+const jst=J.map(()=>({s:'',r:null,t:null}));
+function jdraw(i){
+  const j=J[i],st=jst[i];
+  const ok={c:true,s:st.s===j.s,r:st.r===j.ra,t:st.t===j.ta};
+  const done=st.s&&st.r!==null&&st.t!==null;
+  const sent=done?`<div class="fb ${ok.s&&ok.r&&ok.t?'good':'bad'}"><b>${ok.s&&ok.r&&ok.t?'All four parts are right.':'Check the red parts.'}</b><br>“I chose to ${esc(j.c.toLowerCase())}. This serves ${esc(st.s)}. I did it because ${esc(j.r[st.r])}. The trade-off is that ${esc(j.t[st.t].toLowerCase())}.”<br><span class="note">Choice ✔ · Strand ${ok.s?'✔':'✘ (try again)'} · Reason ${ok.r?'✔':'✘ (does it match the strand?)'} · Trade-off ${ok.t?'✔':'✘ (it must be a real cost)'}</span></div>`:'';
+  $('#jc'+i).innerHTML=`<h3>Choice ${i+1}: ${esc(j.c)}</h3><div class="grid3"><div><label class="lbl">Strand</label><select data-i="${i}" data-f="s"><option value="">Choose…</option>${STR.map(s=>`<option ${st.s===s?'selected':''}>${s}</option>`).join('')}</select></div><div><label class="lbl">Reason</label><select data-i="${i}" data-f="r"><option value="">Choose…</option>${j.r.map((x,k)=>`<option value="${k}" ${st.r===k?'selected':''}>${esc(x)}</option>`).join('')}</select></div><div><label class="lbl">Trade-off</label><select data-i="${i}" data-f="t"><option value="">Choose…</option>${j.t.map((x,k)=>`<option value="${k}" ${st.t===k?'selected':''}>${esc(x)}</option>`).join('')}</select></div></div>${sent}`;
+}
+function init_h1(){
+  $('#h1cards').innerHTML=J.map((j,i)=>`<div class="card" id="jc${i}"></div>`).join('');J.forEach((j,i)=>jdraw(i));
+  $('#h1cards').addEventListener('change',e=>{const s=e.target.closest('select');if(!s)return;const i=+s.dataset.i,f=s.dataset.f;jst[i][f]=f==='s'?s.value:(s.value===''?null:+s.value);jdraw(i)});
+  const upd=()=>{const m={c:$('#h1c').value.trim(),s:$('#h1s').value,r:$('#h1r').value.trim(),t:$('#h1t').value.trim()};$$('#h1chk li').forEach(li=>li.classList.toggle('y',!!m[li.dataset.k]))};
+  ['h1c','h1s','h1r','h1t'].forEach(id=>$('#'+id).addEventListener('input',upd));
+  $('#h1copy').onclick=e=>copyText('H1 Justify studio\n'+J.map((j,i)=>`${i+1}. ${j.c} | ${jst[i].s||'?'} | reason: ${jst[i].r!==null?j.r[jst[i].r]:'?'} | trade-off: ${jst[i].t!==null?j.t[jst[i].t]:'?'}`).join('\n')+`\nMy own: ${$('#h1c').value} | ${$('#h1s').value} | ${$('#h1r').value} | ${$('#h1t').value}`,e.target);
+}
+/* H2 */
+const CV=[
+{p:'Purpose & benefit',o:['Helps canteen staff share surplus food with a charity and cut waste','Makes the canteen look modern','Replaces the canteen staff'],a:0},
+{p:'Risks & affected groups',o:['None. The system is accurate.','A wrong “safe to share” label could harm families who receive the food','Students may get bored'],a:1},
+{p:'Mitigations & owners',o:['A food-safety rule check, owned by the canteen manager','A disclaimer at the bottom of the page','Ask the AI to be careful'],a:0},
+{p:'Data & privacy',o:['Made-up lists only; no names, faces or personal details','Student names so notes feel friendly','Whatever data is available'],a:0},
+{p:'Human oversight',o:['A staff member approves every list before it is sent; any unsafe label pauses the system','The AI approves its own work','Check once a year'],a:0},
+{p:'Monitoring & review',o:['Weekly check of 10 sample lists; review after every change','Nothing. It is finished at launch.','Ask users to complain'],a:0}];
+const cvs=CV.map(()=>null);
+const DC=[
+{e:'Held-out accuracy 90%. Human approval in place. Monitoring plan in place. First time in use.',a:'Deploy',r:['Deploy as a small pilot and watch it','Scale to every school now','Pause because 90% is too low'],ra:0,why:'Evidence and oversight are good, but it is new: pilot first.'},
+{e:'Held-out accuracy 90%. No human approval step. A wrong “safe” label could harm families.',a:'Pause',r:['Deploy; 90% is high enough','Pause until a human approval step is added','Scale; the numbers are fine'],ra:1,why:'High accuracy does not fix missing oversight when harm is possible.'},
+{e:'Pilot ran 4 weeks. Weekly checks all 90% or more. No incidents. Owner and monitoring in place.',a:'Scale',r:['Pause; pilots should never end','Scale to more canteens, keep monitoring','Deploy again from scratch'],ra:1,why:'Strong, monitored evidence over time earns wider use. Monitoring continues.'}];
+const dcs=DC.map(()=>({d:'',r:null}));let h2s=0;
+function ddraw(){
+  $('#h2cases').innerHTML=DC.map((c,i)=>{const s=dcs[i];const done=s.d&&s.r!==null;const ok=s.d===c.a&&s.r===c.ra;
+   return `<div style="margin-bottom:12px"><b>Case ${i+1}:</b> ${esc(c.e)}<div class="grid2"><div><label class="lbl">Decision</label><select data-i="${i}" data-f="d"><option value="">Choose…</option>${['Deploy','Scale','Pause'].map(x=>`<option ${s.d===x?'selected':''}>${x}</option>`).join('')}</select></div><div><label class="lbl">Reason</label><select data-i="${i}" data-f="r"><option value="">Choose…</option>${c.r.map((x,k)=>`<option value="${k}" ${s.r===k?'selected':''}>${esc(x)}</option>`).join('')}</select></div></div>${done?`<div class="fb ${ok?'good':'bad'}">${ok?'✔ ':'✘ '}${esc(c.why)}</div>`:''}</div>`}).join('');
+  h2s=DC.filter((c,i)=>dcs[i].d===c.a&&dcs[i].r===c.ra).length;$('#h2sc').textContent='Decisions '+h2s+' / 3';
+}
+function init_h2(){
+  $('#h2canvas').innerHTML=CV.map((c,i)=>`<div class="card" style="margin:0"><label class="lbl" for="cv${i}">${i+1} · ${c.p}</label><select id="cv${i}" data-i="${i}"><option value="">Choose…</option>${c.o.map((x,k)=>`<option value="${k}">${esc(x)}</option>`).join('')}</select></div>`).join('');
+  $('#h2canvas').addEventListener('change',e=>{const s=e.target.closest('select');cvs[+s.dataset.i]=s.value===''?null:+s.value});
+  $('#h2check').onclick=()=>{
+    if(cvs.includes(null)){fbox('h2fb','info','Fill all six parts first.');return}
+    const ok=CV.filter((c,i)=>cvs[i]===c.a).length;R.canvas=ok;
+    CV.forEach((c,i)=>{$('#cv'+i).style.background=cvs[i]===c.a?'var(--green-t)':'var(--coral-t)'});
+    fbox('h2fb',ok===6?'good':'bad',ok===6?'A complete canvas. Notice part 6: a system is never “done” at launch, so monitoring and review is always on the canvas.':`${ok} of 6 parts are right. Red parts need a better entry.`);
+  };
+  ddraw();$('#h2cases').addEventListener('change',e=>{const s=e.target.closest('select');if(!s)return;const i=+s.dataset.i,f=s.dataset.f;dcs[i][f]=f==='d'?s.value:(s.value===''?null:+s.value);ddraw()});
+  $('#h2copy').onclick=e=>copyText(`H2 Governance canvas\nCanvas parts right: ${R.canvas??'not checked'} of 6\nDecisions: ${dcs.map((d,i)=>`Case ${i+1} ${d.d||'?'}`).join(', ')}\nDecisions right: ${h2s} of 3`,e.target);
+}
+/* H3 */
+const EX=[
+{n:'Fridge Finder',lens:'Critical evaluation',sum:'Sorts classroom snack leftovers by use-by date. Tested on 5 practice lists, all passed. No held-out lists, no blank-list test.',
+ s:[['Nice solution!','v'],['You are clearly clever.','p'],['Strength (evaluation): you logged all five tests with the outputs.','a'],['Strength (governance): the data is made up.','o']],
+ i:[['Try harder.','v'],['You obviously rushed the testing.','p'],['Improvement (evaluation): add 3 held-out lists and a blank-list test.','a'],['Improvement: more colours.','o']],
+ q:[['Who checks the list before it is used?','a'],['Why did you do this?','v'],['Is this your own work?','p']]},
+{n:'Menu Mixer',lens:'Governance',sum:'Suggests lunch menus. Uses student first names to personalise notes. Held-out accuracy 90%. A teacher approves each menu.',
+ s:[['Great job overall.','v'],['Strength (governance): a teacher approves every menu before it is shared.','a'],['You are the best in the class.','p'],['Strength (design): the menu looks tidy.','o']],
+ i:[['Needs work.','v'],['Improvement (governance): remove the name field, or explain why it is needed and how it is protected.','a'],['You never think about privacy.','p'],['Improvement: add more menus.','o']],
+ q:[['How would you spot a wrong allergy label?','a'],['Is it finished?','v'],['Did you copy this?','p']]},
+{n:'Bin Buddy',lens:'Solution design',sum:'Tells students which bin an item goes in. A simple rule, easy to explain. If the item is unknown it still gives a confident answer.',
+ s:[['Cool.','v'],['Strength (design): the simple rule is easy to explain and audit.','a'],['You are a natural.','p'],['Strength (evaluation): you used held-out lists.','o']],
+ i:[['Improve it.','v'],['Improvement (design): add a fallback for unknown items that asks a person.','a'],['You did not think it through.','p'],['Improvement: change the font.','o']],
+ q:[['What should happen when the item is unknown?','a'],['Do you like it?','v'],['Who helped you?','p']]}];
+let h3i=0,h3a=0;const h3p=EX.map(()=>({s:null,i:null,q:null}));
+const KIND={a:'Actionable: specific, tied to the strand, about the work.',v:'Too vague: the maker cannot act on it.',p:'About the person, not the work. Never do this.',o:'Off-lens: not about this round’s strand.'};
+function h3draw(){
+  const e=EX[h3i],st=h3p[h3i];$('#h3head').textContent=`Exhibit ${h3i+1} of 3 · ${e.n}`;
+  const blk=(k,label,arr)=>`<label class="lbl">${label}</label><div class="opts" data-k="${k}">${arr.map((o,j)=>`<button class="opt ${st[k]===j?'sel':''}" data-j="${j}">${esc(o[0])}</button>`).join('')}</div>${st[k]!==null?`<div class="fb ${arr[st[k]][1]==='a'?'good':'bad'}">${KIND[arr[st[k]][1]]}</div>`:''}`;
+  $('#h3stage').innerHTML=`<div class="fb info"><span class="tag">Lens: ${e.lens}</span><br>${esc(e.sum)}</div>${blk('s','Strength',e.s)}${blk('i','Improvement',e.i)}${blk('q','Question',e.q)}<div class="row">${h3i>0?'<button class="btn alt" id="h3prev">Back</button>':''}${h3i<2?'<button class="btn go" id="h3next">Next exhibit</button>':'<button class="btn go" id="h3fin">Finish carousel</button>'}</div>`;
+  const all=EX.flatMap((x,n)=>[x.s[h3p[n].s],x.i[h3p[n].i],x.q[h3p[n].q]]).filter(o=>o&&o[1]==='a').length;h3a=all;$('#h3sc').textContent=`Actionable ${all} / 9`;
+}
+function init_h3(){
+  h3draw();
+  $('#h3stage').addEventListener('click',e=>{
+    const b=e.target.closest('.opt');if(b){const k=b.parentElement.dataset.k;h3p[h3i][k]=+b.dataset.j;h3draw();return}
+    if(e.target.id==='h3next'){h3i++;h3draw()}
+    if(e.target.id==='h3prev'){h3i--;h3draw()}
+    if(e.target.id==='h3fin'){
+      $('#h3done').hidden=false;
+      $('#h3txt').textContent=EX.map((x,n)=>{const p=h3p[n];return `${x.n} (${x.lens})\n  ${p.s!==null?x.s[p.s][0]:'(strength not chosen)'}\n  ${p.i!==null?x.i[p.i][0]:'(improvement not chosen)'}\n  Question: ${p.q!==null?x.q[p.q][0]:'(not chosen)'}`}).join('\n\n');
+    }
+  });
+  $('#h3copy').onclick=e=>copyText('H3 Peer review carousel\n'+$('#h3txt').textContent+`\nActionable comments: ${h3a} of 9`,e.target);
+}
+/* H4 */
+const M=[['Unsafe labels',6,false],['Coverage of foods',80,true],['Staff workload',3,false],['Privacy risk',2,false]];
+const FX=[
+{t:'Tighten the safeguard: only share items on an approved safe list',v:[2,55,3,2],imp:'Unsafe labels',cost:'Coverage of foods',m:'Unsafe labels fall, but fewer foods can be shared. A safeguard that narrows the tool is a trade-off to weigh, not a failure.'},
+{t:'Add a human approval step before every list is sent',v:[1,80,6,2],imp:'Unsafe labels',cost:'Staff workload',m:'Safer, and coverage is kept. The cost is more work for staff. Is that worth it? Decide with evidence.'},
+{t:'Add a student-name field so notes can be personalised',v:[6,80,3,7],imp:'None of the four',cost:'Privacy risk',m:'Nothing improves on these measures, and privacy risk jumps. This fix fails the governance rule.'}];
+let h4f=null;
+function bars(vals,base){return M.map((m,i)=>{const v=vals[i];const cls=base?'':(m[2]?(v>=m[1]?'ok':'bad'):(v<=m[1]?'ok':'bad'));return `<div><div class="note">${m[0]}: <b>${v}${i===1?'%':''}</b>${base?'':` (was ${m[1]}${i===1?'%':''})`}</div><div class="bar"><i style="width:${i===1?v:v*10}%;background:var(--${base?'blue':(v===m[1]?'blue':(cls==='ok'?'green':'coral'))})"></i></div></div>`}).join('')}
+function init_h4(){
+  $('#h4fix').innerHTML=FX.map((f,i)=>`<button class="opt" data-i="${i}">${esc(f.t)}</button>`).join('');
+  $('#h4bars').innerHTML=bars(M.map(m=>m[1]),true);
+  const opts=['Unsafe labels','Coverage of foods','Staff workload','Privacy risk','None of the four'];
+  $('#h4imp').innerHTML+=opts.map(o=>`<option>${o}</option>`).join('');$('#h4cost').innerHTML+=opts.slice(0,4).map(o=>`<option>${o}</option>`).join('');
+  $('#h4fix').addEventListener('click',e=>{const b=e.target.closest('[data-i]');if(!b)return;h4f=+b.dataset.i;$$('#h4fix .opt').forEach(x=>x.classList.toggle('sel',x===b));setTimeout(()=>{},0);$('#h4bars').innerHTML=bars(M.map(m=>m[1]),true);requestAnimationFrame(()=>{$('#h4bars').innerHTML=bars(FX[h4f].v,false)});fbox('h4fb','info',FX[h4f].m);$('#h4fb2').hidden=true});
+  $('#h4rip').onclick=()=>{if(h4f===null||!$('#h4imp').value||!$('#h4cost').value){fbox('h4fb2','info','Pick a fix, then choose what it improves and what it costs.');return}
+    const f=FX[h4f],ok=$('#h4imp').value===f.imp&&$('#h4cost').value===f.cost;R.rip=ok;fbox('h4fb2',ok?'good':'bad',ok?`Yes: “This fix improves ${f.imp.toLowerCase()} but costs ${f.cost.toLowerCase()}.” That is a ripple effect.`:'Look at the bars again: which got better, and which got worse?')};
+  const chk=()=>{const g=$('#h4g').value,f=$('#h4f').value;const m={spec:g.trim().split(/\s+/).filter(Boolean).length>=8,meas:/\d/.test(g),pri:!!$('#h4s').value&&!!$('#h4w').value,step:f.trim().split(/\s+/).filter(Boolean).length>=4};$$('#h4chk li').forEach(li=>li.classList.toggle('y',m[li.dataset.k]))};
+  ['h4g','h4f','h4s','h4w'].forEach(id=>{$('#'+id).addEventListener('input',chk);$('#'+id).addEventListener('change',chk)});
+  $('#h4copy').onclick=e=>copyText(`H4 Ripple and Term-2 goal\nFix tested: ${h4f!==null?FX[h4f].t:'none'}\nRipple sentence correct: ${R.rip?'yes':'not yet'}\nStrand: ${$('#h4s').value}\nGoal: ${$('#h4g').value}\nFirst step: ${$('#h4f').value}\nCheck by: ${$('#h4w').value}`,e.target);
+}
+
+window.addEventListener('DOMContentLoaded',()=>show(location.hash.slice(1)||'h1',false));
+if(document.readyState!=='loading')show(location.hash.slice(1)||'h1',false);
+</script>
+
+</body></html>
